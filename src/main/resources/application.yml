@@ -6,9 +6,21 @@ spring:
     url: jdbc:mariadb://localhost:3306/music
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-
+  mail:
+    smtp:
+      auth: true
+      port: 465
+      starttls:
+        required: true
+        enable: true
+      socketfactory:
+        soketclass: javax.net.ssl.SSLSocketFactory
+        fallback: false
+        port: 465
+      id: gkswk52060@gmail.com
+      password: phmn nspw yzcc pagy
