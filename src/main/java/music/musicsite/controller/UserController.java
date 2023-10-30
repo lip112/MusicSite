@@ -97,28 +97,26 @@ public class UserController {
         boolean b = userService.checkDuplicateNickname(nickname);
         if (b) {
             return ResponseEntity.ok(new ResponseDto<>("닉네임이 중복되지 않습니다."));
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ResponseDto<>("닉네임이 중복 됩니다."));
         }
     }
 
-
     @PutMapping("/password")
-    public ResponseEntity<Object> passwordChange(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseDto<String>> passwordChange(@RequestBody UserDTO userDTO) {
         log.info("passwordChange..." + userDTO);
 
         userService.updatePassword(userDTO);
+
         return ResponseEntity.ok(new ResponseDto<>("비밀번호 변경을 성공했습니다."));
     }
 
-    //이메일 인증
-    @GetMapping("/emailConfirm/{email}")
-    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("email") String email) throws Exception {
-        log.info("emailConfirm..." + email);
+    @GetMapping("/confirm-hakbun/{hakbun}")
+    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("hakbun") int hakbun) throws Exception {
+        log.info("emailConfirm..." + hakbun);
 
-        String confirm = emailService.sendSimpleMessage(email);
+        String confirm = emailService.sendSimpleMessage(hakbun);
 
         return ResponseEntity.ok(new ResponseDto<>(confirm, "이메일 인증번호를 성공적으로 발송했습니다."));
     }

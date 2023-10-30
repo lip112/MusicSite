@@ -74,15 +74,15 @@ public class EmailService {
         return key.toString();
     }
 
-    public String sendSimpleMessage(String to) throws Exception {
-        log.info("sendSimpleMessage" + to);
+    public String sendSimpleMessage(int hakbun) throws Exception {
+        log.info("sendSimpleMessage" + hakbun);
         // TODO Auto-generated method stub
         EMAIL_CONFIRM_CODE = createKey();
-        MimeMessage message = createMessage(to); // 보낼 메세지, 받는사람, 보내는사람 작성
-        try{//예외처리
-            emailSender.send(message); // 전송하기
+        MimeMessage message = createMessage(hakbun + "@du.ac.kr"); // 보낼 메세지, 받는사람, 보내는사람 작성
+        try{
+            emailSender.send(message); //전송하기
         }catch(MailException es){
-            es.printStackTrace();//어디서 예외가 발생했는지 알려줌
+            es.printStackTrace(); //어디서 예외가 발생했는지 알려줌
             throw new IllegalArgumentException();
         }
         return EMAIL_CONFIRM_CODE;
