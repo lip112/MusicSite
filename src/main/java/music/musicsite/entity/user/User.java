@@ -1,7 +1,9 @@
 package music.musicsite.entity.user;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import music.musicsite.dto.user.UserDTO;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -9,20 +11,16 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
 @Entity
-@ToString
 @EntityListeners(value = { AuditingEntityListener.class}) // 변경됐을때 알리
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)// auto_increment
-    private Long uid;
+    private Long user_id;
 
     @Column(unique = true, nullable = false) //UK 선언
-    private String email;
+    private int hakbun;
 
     private String password;
 
@@ -34,6 +32,32 @@ public class User {
 
     @CreatedDate
     @Column(updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
+    @Builder
+    public User(int hakbun, String nickname, String password, Role role) {
+        this.hakbun = hakbun;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User() {
+
+    }
+
+    public static User from(UserDTO userDTO) {
+        return User.builder()
+                .hakbun(userDTO.getHakbun())
+                .password(userDTO.getPassword())
+                .nickname(userDTO.getNickname())
+                .role(userDTO.getRole())
+                .build();
+    }
+
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

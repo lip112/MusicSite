@@ -1,13 +1,14 @@
 package music.musicsite.service.user;
 
+import music.musicsite.customException.DuplicateUserException;
+import music.musicsite.customException.EmailConfirmCodeNotMatchingException;
 import music.musicsite.dto.user.UserDTO;
 import music.musicsite.entity.user.Role;
 import music.musicsite.entity.user.User;
 import music.musicsite.repository.user.UserRepository;
-import music.musicsite.service.mail.EmailServiceImpl;
+import music.musicsite.service.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,36 +25,33 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder PasswordEncoder;
 
 
-
     @Override
-    public UserDTO signUp(UserDTO userDTO) {
+    public void signUp(UserDTO userDTO) throws Exception {
         log.info("signup..." + userDTO);
-        //이메일 인증 한번 더
-        if (userDTO.getCreateKey().equals(EmailServiceImpl.ePw)) {
-            userDTO.setPassword(PasswordEncoder.encode(userDTO.getPassword()));//비밀번호 암호화
-            userDTO.setRole(Role.ROLE_USER);
-            try {
-                User save = userRepository.save(DtoToEntity(userDTO)); // 이렇게 하면 저장이 되고 난 후에 DB에 저장된 데이터가 저장됨.
-                //회원가입 성공시 uid가 null이 아니면 성공
-                if (save.getUid() != null) {
-                    return EntityToDto(save);
-                } else {
-                    return null;
-                }
-            } catch (DataIntegrityViolationException e) {
-                throw new DataIntegrityViolationException("이미 존재하는 이메일 입니다.");
-            }
-        } else {
-            throw new IllegalArgumentException();
+
+        if (!userDTO.getCreateKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
+            throw new EmailConfirmCodeNotMatchingException("이메일 인증번호가 일치하지 않습니다.");
+        }
+
+        userDTO.setPassword(PasswordEncoder.encode(userDTO.getPassword()));
+        userDTO.setRole(Role.ROLE_USER);
+
+        try {
+            User save = userRepository.save(User.from(userDTO)); // 이렇게 하면 저장이 되고 난 후에 DB에 저장된 데이터가 저장됨.
+            UserDTO.from(save);
+
+        } catch (Exception e) {
+            throw new DuplicateUserException("이미 존재하는 이메일 입니다.");
         }
     }
+    //로그인 중복 시에 예외처리는 아직 동작 확인 안함.
 
     @Override
     public UserDTO login(final UserDTO userDTO) {
         log.info("login..." + userDTO);
 
 
-        Optional<User> user = userRepository.findByEmailAndPassword(userDTO.getEmail(), userDTO.getPassword());
+        Optional<User> user = userRepository.findByEmailAndPassword(userDTO.geth(), userDTO.getPassword());
 
 
         return EntityToDto(user.get());
@@ -68,9 +66,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(UserDTO userDTO) { //이건 추후에 웹메일 인증으로 바꿀예정
         log.info("updatePassword...");
-        System.out.println("EmailServiceImpl.ePw = " + EmailServiceImpl.ePw);
+        System.out.println("EmailServiceImpl.ePw = " + EmailService.EMAIL_CONFIRM_CODE);
         //이메일 인증 한번 더
-        if (userDTO.getCreateKey().equals(EmailServiceImpl.ePw)) {
+        if (userDTO.getCreateKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
             userDTO.setPassword(PasswordEncoder.encode(userDTO.getPassword()));//비밀번호 암호화
             userRepository.updatePassword(userDTO.getEmail(), userDTO.getPassword());
         } else {

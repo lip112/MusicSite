@@ -2,11 +2,12 @@ package music.musicsite.controller;
 
 import music.musicsite.config.Security.UserDetails;
 import music.musicsite.config.Security.jwt.JwtTokenProvider;
+import music.musicsite.dto.response.ResponseDto;
 import music.musicsite.dto.token.TokenDTO;
 import music.musicsite.dto.user.UserDTO;
+import music.musicsite.service.mail.EmailService;
 import music.musicsite.service.refreshtoken.RefreshTokenService;
 import music.musicsite.service.visitor.VisitorService;
-import music.musicsite.service.mail.EmailService;
 import music.musicsite.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/register")
+@RequestMapping("/api/user")
 @Log4j2
 public class UserController {
     private final UserService userService;
@@ -40,14 +41,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         log.info("login... : " + userDTO);
-        // 방문자 수 증가 로직을 수행
-        //로그인 성공시 UserDetails의 정보들을 가져온다.
         Map<String, String> responseData = new HashMap<>();
 
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            userDTO.getEmail(),
+                            userDTO.getHakbun(),
                             userDTO.getPassword()
                     )
             );
@@ -74,14 +73,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(responseData);
         }
-
-
     }
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = jwtTokenProvider.getRefreshToken(request);
 
-        log.info("logout... refreshTㅜㅜoken : " + refreshToken);
+        log.info("logout... refreshToken : " + refreshToken);
         refreshTokenService.deleteToken(refreshToken);
 
         // 쿠키를 초기화 하기위해 생성후 초기화 해준다.
@@ -102,13 +99,12 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signup(@RequestBody final UserDTO userDTO){
+    public ResponseEntity<ResponseDto<String>> signup(@RequestBody UserDTO userDTO) throws Exception {
         log.info("signup..." + userDTO);
 
         userService.signUp(userDTO);
 
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(new ResponseDto<>("회원가입에 성공하셨습니다."));
     }
 
     @GetMapping("/signup/{nickname}")
