@@ -1,15 +1,21 @@
+// queryDsl버전
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.16'
+    id 'org.springframework.boot' version '2.7.7'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    //querydsl 추가
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
-group = 'music'
+group = 'com.exam'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    sourceCompatibility = '11'
-}
+sourceCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -21,17 +27,27 @@ repositories {
     mavenCentral()
 }
 
+//testImplementation은 테스트때만 적용된다.
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    //컴파일 전용
+    compile('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok') // 추가
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     //시큐리티
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Querydsl 의존성
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     //메일인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -39,8 +55,43 @@ dependencies {
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+
+//--------------------------------------------------------
+//Querydsl 사용하기
+//querydsl 사용 경로
+def querydslDir = "$buildDir/generated/querydsl"
+
+//querydsl 사용 설정
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+// build 시 사용할 sourceSet
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+// compileClasspath와 annotationProcessor 상속
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+
+//feature/improve-all
+// querydsl 컴파일 시 사용할 옵션.
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+//feature/improve-all
+// QType 정리
+clean {
+    delete file(querydslDir)
 }

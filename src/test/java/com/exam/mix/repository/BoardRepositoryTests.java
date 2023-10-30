@@ -1,11 +1,11 @@
 package com.exam.mix.repository;
 
 
-import com.exam.mix.dto.page.PageRequestDTO;
-import com.exam.mix.entity.board.Board;
-import com.exam.mix.entity.user.User;
-import com.exam.mix.repository.board.BoardRepository;
-import com.exam.mix.service.board.BoardService;
+import music.musicsite.dto.page.PageRequestDTO;
+import music.musicsite.entity.board.Board;
+import music.musicsite.entity.user.User;
+import music.musicsite.repository.board.BoardRepository;
+import music.musicsite.service.board.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

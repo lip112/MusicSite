@@ -1,7 +1,7 @@
 package com.exam.mix.repository;
 
-import com.exam.mix.entity.visitor.Visitor;
-import com.exam.mix.repository.visitor.VisitorRepository;
+import music.musicsite.entity.visitor.Visitor;
+import music.musicsite.repository.visitor.VisitorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

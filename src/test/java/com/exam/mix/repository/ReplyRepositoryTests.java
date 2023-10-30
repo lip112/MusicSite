@@ -1,9 +1,8 @@
 package com.exam.mix.repository;
 
-import com.exam.mix.entity.board.Board;
-import com.exam.mix.entity.board.Reply;
-import com.exam.mix.repository.reply.ReplyRepository;
-import com.exam.mix.service.reply.ReplyService;
+import music.musicsite.entity.board.Board;
+import music.musicsite.entity.board.Reply;
+import music.musicsite.repository.reply.ReplyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
