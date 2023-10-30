@@ -14,11 +14,11 @@ import javax.persistence.*;
 @ToString
 public class Refreshtoken {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rid;
+    private Long refreshToken_id;
 
     private String refreshToken;
 
-    private String email;
+    private String hakbun;
 
     @Enumerated(EnumType.STRING)
     private Role role;

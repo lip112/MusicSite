@@ -9,6 +9,7 @@ import music.musicsite.repository.user.UserRepository;
 import music.musicsite.service.mail.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public void signUp(UserDTO userDTO) throws Exception {
         log.info("signup..." + userDTO);
 
-        if (!userDTO.getCreateKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
+        if (!userDTO.getEmailConfirmKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
             throw new EmailConfirmCodeNotMatchingException("이메일 인증번호가 일치하지 않습니다.");
         }
 
@@ -50,46 +51,31 @@ public class UserServiceImpl implements UserService {
     public UserDTO login(final UserDTO userDTO) {
         log.info("login..." + userDTO);
 
-
         User user = userRepository.findByHakbunAndPassword(userDTO.getHakbun(), userDTO.getPassword())
                 .orElseThrow(() -> new NullPointerException("로그인 혹은 비밀번호를 확인하세요."));
-
 
         return UserDTO.from(user);
     }
 
     @Override
-    public UserDTO logout(final UserDTO userDTO) { // 시큐리티 만들면 완성할예정.
-        log.info("logout..." + userDTO);
-        return null;
-    }
-
-    @Override
-    public void updatePassword(UserDTO userDTO) { //이건 추후에 웹메일 인증으로 바꿀예정
+    public void updatePassword(UserDTO userDTO) {
         log.info("updatePassword...");
-        System.out.println("EmailServiceImpl.ePw = " + EmailService.EMAIL_CONFIRM_CODE);
-        //이메일 인증 한번 더
-        if (userDTO.getCreateKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
-            userDTO.setPassword(PasswordEncoder.encode(userDTO.getPassword()));//비밀번호 암호화
-            userRepository.updatePassword(userDTO.getEmail(), userDTO.getPassword());
-        } else {
-            throw new IllegalArgumentException("이메일 인증이 맞지 않습니다");
+        System.out.println("EmailService.EMAIL_CONFIRM_CODE = " + EmailService.EMAIL_CONFIRM_CODE);
+        if (!userDTO.getEmailConfirmKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
+            throw new IllegalArgumentException("이메일 인증번호가 일치하지 않습니다.");
         }
+        User user = userRepository.findByHakbun(userDTO.getHakbun())
+                .orElseThrow(() -> new NullPointerException("존재 하지 않는 사용자 입니다."));
+
+        user.changePassword(PasswordEncoder.encode(userDTO.getPassword()));
     }
 
     @Override
     public boolean checkDuplicateNickname(final String nickname) {
         log.info("signup..." + nickname);
         Optional<User> byNickname = userRepository.findByNickname(nickname);
-        if (byNickname.isEmpty()){
-            return true;
-        }
-        //닉네임을 찾아서 중복되면 이미 존재하기 때문에 false 보내 실패를 알린다.
-        else if (byNickname.get().getNickname().equals(nickname)) {
-            return false;
-        } else {
-            return true;
-        }
+        //닉네임이 중복되지 않으면 true
+        return byNickname.isEmpty();
     }
 
 }

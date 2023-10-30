@@ -74,7 +74,7 @@ public class EmailService {
         return key.toString();
     }
 
-    public String sendSimpleMessage(String to)throws Exception {
+    public String sendSimpleMessage(String to) throws Exception {
         log.info("sendSimpleMessage" + to);
         // TODO Auto-generated method stub
         EMAIL_CONFIRM_CODE = createKey();

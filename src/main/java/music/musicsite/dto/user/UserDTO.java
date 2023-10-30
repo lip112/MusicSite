@@ -13,15 +13,15 @@ public class UserDTO {
     private String password;
     private String nickname;
     private Role role;
-    private String createKey;
+    private String emailConfirmKey;
 
     @Builder
-    public UserDTO(int hakbun, String password, String nickname, Role role, String createKey) {
+    public UserDTO(int hakbun, String password, String nickname, Role role, String emailConfirmKey) {
         this.hakbun = hakbun;
         this.password = password;
         this.nickname = nickname;
         this.role = role;
-        this.createKey = createKey;
+        this.emailConfirmKey = emailConfirmKey;
     }
 
     public static UserDTO from(User user) {

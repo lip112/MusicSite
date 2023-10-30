@@ -17,11 +17,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByNickname(@Param("nickname") String nickname);
 
     Optional<User> findByHakbunAndPassword(int hakbun, String password);
-    Optional<User> findByEmail(String email);
-
-    @Modifying // Update는 모디파이로 업데이트한다는걸 알려줘야 한다.
-    @Query(value = " update User u " +
-            " set u.password = :password" +
-            " where u.email = :email ")
-    void updatePassword(@Param("email") String email, @Param("password") String password);
+    Optional<User> findByHakbun(int hakbun);
+//
+//    @Modifying // Update는 모디파이로 업데이트한다는걸 알려줘야 한다.
+//    @Query(value = " update User u " +
+//            " set u.password = :password" +
+//            " where u.email = :email ")
+//    void updatePassword(@Param("email") String email, @Param("password") String password);
 }

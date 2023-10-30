@@ -9,7 +9,6 @@ public interface UserService {
     void signUp(UserDTO userDTO) throws Exception;
     UserDTO login(UserDTO userDTO) ;
 
-    UserDTO  logout(UserDTO userDTO);
     void updatePassword(UserDTO userDTO);
     boolean  checkDuplicateNickname(String nickname);
 

@@ -33,9 +33,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private final EmailService emailService;
-    private final VisitorService visitorService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
@@ -43,11 +41,10 @@ public class UserController {
         log.info("login... : " + userDTO);
 
         UserDTO userDetails = userService.login(userDTO);
-        Map<String, String> responseData = new HashMap<>();
-
         // 인증이 성공하면 JWT 토큰 생성
         TokenDTO token = jwtTokenProvider.createToken(userDetails.getNickname(), userDetails.getRole());
 
+        Map<String, String> responseData = new HashMap<>();
         responseData.put("nickname", userDetails.getNickname());
         responseData.put("accessToken", token.getAccessToken());
 
@@ -62,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<ResponseDto<String>> logout(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = jwtTokenProvider.getRefreshToken(request);
 
         log.info("logout... refreshToken : " + refreshToken);
@@ -81,8 +78,7 @@ public class UserController {
         response.addCookie(refreshTokenCookie);
         SecurityContextHolder.clearContext(); // 사용자 인증 정보 제거
 
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(new ResponseDto<>("로그아웃이 완료되었습니다."));
     }
 
     @PostMapping("/signup")
@@ -95,33 +91,36 @@ public class UserController {
     }
 
     @GetMapping("/signup/{nickname}")
-    public ResponseEntity<String> checkNickname(@PathVariable("nickname") final String nickname) {
+    public ResponseEntity<ResponseDto<String>> checkNickname(@PathVariable("nickname") final String nickname) {
         log.info("checkNickname..." + nickname);
 
-        userService.checkDuplicateNickname(nickname);
-        return ResponseEntity.ok()
-                .body(nickname);
+        boolean b = userService.checkDuplicateNickname(nickname);
+        if (b) {
+            return ResponseEntity.ok(new ResponseDto<>("닉네임이 중복되지 않습니다."));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDto<>("닉네임이 중복 됩니다."));
+        }
     }
 
 
-    @PostMapping("/passwordChange") // 추후에 웹메일 인증할때 바꿔야함.
+    @PutMapping("/password")
     public ResponseEntity<Object> passwordChange(@RequestBody UserDTO userDTO) {
         log.info("passwordChange..." + userDTO);
 
         userService.updatePassword(userDTO);
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok(new ResponseDto<>("비밀번호 변경을 성공했습니다."));
     }
 
     //이메일 인증
     @GetMapping("/emailConfirm/{email}")
-    public ResponseEntity<String> emailConfirm(@PathVariable("email") String email) throws Exception {
+    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("email") String email) throws Exception {
         log.info("emailConfirm..." + email);
 
         String confirm = emailService.sendSimpleMessage(email);
 
-        return ResponseEntity.ok()
-                .body(confirm);
+        return ResponseEntity.ok(new ResponseDto<>(confirm, "이메일 인증번호를 성공적으로 발송했습니다."));
     }
 
 }
