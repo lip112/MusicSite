@@ -1,6 +1,7 @@
 package music.musicsite.config.Security.jwt;
 
 import music.musicsite.dto.token.TokenDTO;
+import music.musicsite.entity.user.Role;
 import music.musicsite.service.refreshtoken.RefreshTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -46,9 +47,9 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public TokenDTO createToken(String userEmail, List<String> roles) {
+    public TokenDTO createToken(String userEmail, Role role) {
         Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        claims.put("role", role); // 정보는 key / value 쌍으로 저장된다.
         Date now = new Date();
 
         //Access Token
@@ -68,7 +69,7 @@ public class JwtTokenProvider {
                 // signature 에 들어갈 secret값 세팅
                 .compact();
         //db에 토큰 저장
-        refreshTokenService.saveRefreshToken(refreshToken, userEmail, roles.get(0));
+        refreshTokenService.saveRefreshToken(refreshToken, userEmail, role);
 
 
         return TokenDTO.builder()

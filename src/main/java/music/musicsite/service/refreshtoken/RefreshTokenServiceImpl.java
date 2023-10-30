@@ -18,11 +18,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
     private final RefreshTokenRepository repository;
 
     @Override
-    public void saveRefreshToken(String token, String email, String role) {
+    public void saveRefreshToken(String token, String email, Role role) {
         Refreshtoken refreshToken = Refreshtoken.builder()
                 .refreshToken(token)
                 .email(email)
-                .role(Role.valueOf(role))
+                .role(role)
                 .build();
         repository.save(refreshToken);
     }

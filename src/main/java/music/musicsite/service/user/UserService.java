@@ -2,6 +2,8 @@ package music.musicsite.service.user;
 
 import music.musicsite.dto.user.UserDTO;
 
+import java.util.Map;
+
 
 public interface UserService {
     void signUp(UserDTO userDTO) throws Exception;

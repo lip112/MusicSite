@@ -1,9 +1,10 @@
 package music.musicsite.service.refreshtoken;
 
 import music.musicsite.dto.token.TokenDTO;
+import music.musicsite.entity.user.Role;
 
 public interface RefreshTokenService {
-    void saveRefreshToken(String refreshToken, String email, String role);
+    void saveRefreshToken(String refreshToken, String email, Role role);
 
     TokenDTO findUserInfomation(String refreshToken);
 

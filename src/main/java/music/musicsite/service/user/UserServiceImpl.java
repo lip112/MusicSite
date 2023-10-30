@@ -51,10 +51,11 @@ public class UserServiceImpl implements UserService {
         log.info("login..." + userDTO);
 
 
-        Optional<User> user = userRepository.findByEmailAndPassword(userDTO.geth(), userDTO.getPassword());
+        User user = userRepository.findByHakbunAndPassword(userDTO.getHakbun(), userDTO.getPassword())
+                .orElseThrow(() -> new NullPointerException("로그인 혹은 비밀번호를 확인하세요."));
 
 
-        return EntityToDto(user.get());
+        return UserDTO.from(user);
     }
 
     @Override

@@ -39,43 +39,30 @@ public class UserController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
+    public ResponseEntity<ResponseDto<Map<String, String>>> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         log.info("login... : " + userDTO);
+
+        UserDTO userDetails = userService.login(userDTO);
         Map<String, String> responseData = new HashMap<>();
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            userDTO.getHakbun(),
-                            userDTO.getPassword()
-                    )
-            );
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        // 인증이 성공하면 JWT 토큰 생성
+        TokenDTO token = jwtTokenProvider.createToken(userDetails.getNickname(), userDetails.getRole());
 
-            // 인증이 성공하면 JWT 토큰 생성
-            TokenDTO token = jwtTokenProvider.createToken(userDetails.getUsername(), userDetails.getAuthorities().stream().map(Object::toString).collect(Collectors.toList()));
-            visitorService.incrementVisitorCount(userDTO.getNickname());
+        responseData.put("nickname", userDetails.getNickname());
+        responseData.put("accessToken", token.getAccessToken());
 
-            responseData.put("nickname", userDetails.getNickname());
-            responseData.put("accessToken", token.getAccessToken());
+        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
+        cookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유효 기간 설정
+        cookie.setPath("/"); // 쿠키의 유효 범위를 사이트 전체로 설정
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
 
-            Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유효 기간 설정
-            cookie.setPath("/"); // 쿠키의 유효 범위를 사이트 전체로 설정
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true);
-            response.addCookie(cookie);
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(responseData);
-        } catch (Exception e) {
-            responseData.put("error", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(responseData);
-        }
+        return ResponseEntity.ok(new ResponseDto<>(responseData, "로그인에 성공했습니다."));
     }
+
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = jwtTokenProvider.getRefreshToken(request);
 
         log.info("logout... refreshToken : " + refreshToken);
