@@ -16,8 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             " where u.nickname = :nickname")
     Optional<User> findByNickname(@Param("nickname") String nickname);
 
-    Optional<User> findByHakbunAndPassword(int hakbun, String password);
-    Optional<User> findByHakbun(int hakbun);
+    Optional<User> findByHakbunAndPassword(String hakbun, String password);
+    Optional<User> findByHakbun(String hakbun);
+
 //
 //    @Modifying // Update는 모디파이로 업데이트한다는걸 알려줘야 한다.
 //    @Query(value = " update User u " +

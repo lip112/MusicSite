@@ -10,6 +10,6 @@ import java.util.List;
 public interface SearchBoardRepository {
     Page<Tuple> getList(Pageable pageable);
 
-    List<BoardWithReplyDTO> getbno(long bno);
+    List<BoardWithReplyDTO> getBoardId(long boardId);
 
 }

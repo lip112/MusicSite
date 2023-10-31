@@ -18,10 +18,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
     private final RefreshTokenRepository repository;
 
     @Override
-    public void saveRefreshToken(String token, String email, Role role) {
+    public void saveRefreshToken(String token, String hakbun, Role role) {
         Refreshtoken refreshToken = Refreshtoken.builder()
                 .refreshToken(token)
-                .email(email)
+                .hakbun(hakbun)
                 .role(role)
                 .build();
         repository.save(refreshToken);
@@ -29,11 +29,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
 
     @Override
     public TokenDTO findUserInfomation(String refreshToken) {
-        Optional<Refreshtoken> byRefreshToken = repository.findByRefreshToken(refreshToken);
-        System.out.println("findByRefreshToken = " + byRefreshToken);
+        Refreshtoken byrefreshtoken = repository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new NullPointerException("리프래쉬 토큰이 존재하지 않습니다."));
         return TokenDTO.builder()
-                .email(byRefreshToken.get().getEmail())
-                .role(byRefreshToken.get().getRole())
+                .hakbun(byrefreshtoken.getHakbun())
+                .role(byrefreshtoken.getRole())
                 .build();
     }
 

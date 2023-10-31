@@ -18,28 +18,6 @@ public interface ReplyService {
 
     void deleteReply(ReplyDTO replyDTO);
 
-    void deleteAllByBno(Long bno);
+    void deleteAllByBoardId(Long bno);
 
-    default Reply DtoToEntity(ReplyDTO replyDTO) {
-        Board board = Board.builder()
-                .bno(replyDTO.getBno())
-                .build();
-        Reply reply = Reply.builder()
-                .content(replyDTO.getContent())
-                .replyer(replyDTO.getReplyer())
-                .board(board)
-                .build();
-        return reply;
-    }
-
-    default ReplyDTO EntityToDto(Reply reply) {
-        ReplyDTO replyDTO = ReplyDTO.builder()
-                .bno(reply.getBoard().getBno())
-                .rno(reply.getRno())
-                .writeReplyDate(reply.getWriteReplyDate())
-                .content(reply.getContent())
-                .replyer(reply.getReplyer())
-                .build();
-        return replyDTO;
-    }
 }

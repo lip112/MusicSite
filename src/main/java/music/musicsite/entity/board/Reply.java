@@ -1,6 +1,7 @@
 package music.musicsite.entity.board;
 
 import lombok.*;
+import music.musicsite.dto.board.ReplyDTO;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @EntityListeners(value = { AuditingEntityListener.class})
 public class Reply {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rno;
+    private Long replyId;
 
     private String content;
 
@@ -29,6 +30,17 @@ public class Reply {
     @Column(updatable = false)
     private LocalDateTime writeReplyDate;
 
+    public static Reply from(ReplyDTO replyDTO) {
+        Board board = Board.builder()
+                .boardId(replyDTO.getBoardId())
+                .build();
+        Reply reply = Reply.builder()
+                .content(replyDTO.getContent())
+                .replyer(replyDTO.getReplyer())
+                .board(board)
+                .build();
+        return reply;
+    }
     public void changeContent(String content) {
         this.content = content;
     }

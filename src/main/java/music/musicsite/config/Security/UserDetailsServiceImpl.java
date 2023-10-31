@@ -14,14 +14,15 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     @Override // 로그인시 실행되고 authentication로 값을 돌려줌.
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("loadUserByUsernaeme = " + email);
-        Optional<User> user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String hakbun) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsernaeme = " + hakbun);
+        User user = userRepository.findByHakbun(hakbun)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         return UserDetails.builder()
-                .email(user.get().getEmail())
-                .password(user.get().getPassword())
-                .nickname(user.get().getNickname())
-                .role(user.get().getRole())
+                .hakbun(user.getHakbun())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .role(user.getRole())
                 .build();
     }
 }

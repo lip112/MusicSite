@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Board extends TimeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bno;
+    private Long boardId;
 
     private String title;
 
@@ -39,7 +39,7 @@ public class Board extends TimeTable {
         this.content = content;
     }
 
-    public Board DtoToEntity(BoardDTO boardDTO) {
+    public static Board from(BoardDTO boardDTO) {
         User user = User.builder().nickname(boardDTO.getWriter()).build();
         Board board = Board.builder()
                 .title(boardDTO.getTitle())
@@ -49,17 +49,5 @@ public class Board extends TimeTable {
         return board;
     }
 
-    public BoardDTO EntityToDto(Board board, String nickname, Long replyCount) {
-        User writer = board.getWriter();
 
-        BoardDTO boardDTO = BoardDTO.builder()
-                .bno(board.getBno())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .writer(writer.getNickname())
-                .regDate(board.getRegDate().toString())
-                .modDate(board.getModDate().toString())
-                .build();
-        return boardDTO;
-    }
 }

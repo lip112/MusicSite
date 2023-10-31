@@ -59,7 +59,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public List<BoardWithReplyDTO> getbno(long bno) {
+    public List<BoardWithReplyDTO> getBoardId(long boardId) {
         log.info("getbno.................");
 
         QBoard board = QBoard.board;
@@ -69,14 +69,14 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         List<Tuple> fetch = from(board)
                 .select(board, reply)
                 .leftJoin(reply).on(reply.board.eq(board))
-                .where(board.bno.eq(bno))
+                .where(board.boardId.eq(boardId))
                 .fetch();
 
         //댓글이 없을경우 게시글만 보내주기
         if (fetch.get(0).get(reply) == null) {
             List<BoardWithReplyDTO> list = new ArrayList<BoardWithReplyDTO>();
             list.add(BoardDTO.builder()
-                    .bno(fetch.get(0).get(board).getBno())
+                    .boardId(fetch.get(0).get(board).getBoardId())
                     .title(fetch.get(0).get(board).getTitle())
                     .content(fetch.get(0).get(board).getContent())
                     .writer(fetch.get(0).get(board).getWriter().getNickname())
@@ -113,7 +113,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<BoardWithReplyDTO> list = new ArrayList<BoardWithReplyDTO>();
         list.add(BoardDTO.builder()
-                .bno(fetch.get(0).get(board).getBno())
+                .boardId(fetch.get(0).get(board).getBoardId())
                 .title(fetch.get(0).get(board).getTitle())
                 .content(fetch.get(0).get(board).getContent())
                 .writer(fetch.get(0).get(board).getWriter().getNickname())
@@ -124,11 +124,11 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         );
         for (int i = 0; i < fetch.size(); i++) {
             list.add(ReplyDTO.builder()
-                    .rno(fetch.get(i).get(reply).getRno())
+                    .replyId(fetch.get(i).get(reply).getReplyId())
                     .content(fetch.get(i).get(reply).getContent())
                     .replyer(fetch.get(i).get(reply).getReplyer())
                     .writeReplyDate(fetch.get(i).get(reply).getWriteReplyDate())
-                    .bno(fetch.get(i).get(reply).getBoard().getBno())
+                    .boardId(fetch.get(i).get(reply).getBoard().getBoardId())
                     .build()
             );
         }

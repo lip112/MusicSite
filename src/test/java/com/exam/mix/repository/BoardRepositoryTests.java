@@ -24,7 +24,7 @@ public class BoardRepositoryTests {
     public void BoardAddData(){
         IntStream.rangeClosed(1, 101).forEach(i ->{
             User user = User.builder()
-                    .uid((long) i)
+                    .userId((long) i)
                     .build();
             Board board = Board.builder()
                     .title("title..." + i)
@@ -42,6 +42,6 @@ public class BoardRepositoryTests {
 
     @Test
     public void BoardGetBno(){
-        boardService.getBno((long)1);
+        boardService.getBoardId((long)1);
     }
 }

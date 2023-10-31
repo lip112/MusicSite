@@ -27,7 +27,7 @@ import java.util.List;
 @EnableWebSecurity //spring security 를 적용한다는 Annotation
 @Configuration
 @RequiredArgsConstructor
-public class SecurityConfig  {
+public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
 
@@ -52,7 +52,7 @@ public class SecurityConfig  {
                 .antMatchers("/", "/register/**", "/notify/**", "/board/list/**", "/auth/**", "/visit/**").permitAll()
                 .antMatchers("/board/**", "/core/**", "/reply/**").hasRole("USER")
                 .antMatchers("/aaa").hasRole("ADMIN");
-                //.anyRequest().authenticated() //authenticated() 그 외 요청 인증필요 , .permitAll()은 그외 모든요청 허용
+        //.anyRequest().authenticated() //authenticated() 그 외 요청 인증필요 , .permitAll()은 그외 모든요청 허용
         return http.build();
     }
 

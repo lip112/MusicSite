@@ -16,4 +16,6 @@ public class TokenDTO {
     private String nickname;
     private Role role;
     private String key;
+    private String hakbun;
+
 }

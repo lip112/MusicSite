@@ -6,7 +6,7 @@ spring:
     url: jdbc:mariadb://localhost:3306/music
   jpa:
     hibernate:
-#      ddl-auto: create
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true

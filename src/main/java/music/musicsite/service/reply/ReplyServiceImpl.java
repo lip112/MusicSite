@@ -23,9 +23,9 @@ public class ReplyServiceImpl implements ReplyService{
 
     @Override
     public ReplyDTO register(ReplyDTO replyDTO) {
-        Reply reply = replyRepository.save(DtoToEntity(replyDTO));
-        if (reply.getRno() != null) {
-            return EntityToDto(reply);
+        Reply reply = replyRepository.save(Reply.from(replyDTO));
+        if (reply.getReplyId() != null) {
+            return ReplyDTO.from(reply);
         } else {
             return null;
         }
@@ -39,27 +39,27 @@ public class ReplyServiceImpl implements ReplyService{
     @Override// 닉네임이 동일하니 실행
     public void modifyReply(ReplyDTO replyDTO) {
         //JPA에서는 트랜잭션이 끝나는 시점에 변화가 있는 모든 엔티티 객체를 데이터베이스에 자동으로 반영해 준다. 영속성에 있는 값을찾아 변경
-        Reply reply = entityManager.find(Reply.class, replyDTO.getRno());
+        Reply reply = entityManager.find(Reply.class, replyDTO.getReplyId());
         reply.changeContent(replyDTO.getContent());
     }
 
     @Override
     public void deleteReply(ReplyDTO replyDTO) {
-        replyRepository.deleteById(replyDTO.getRno());
+        replyRepository.deleteById(replyDTO.getBoardId());
     }
 
     @Override
-    public List<ReplyDTO> findAll(Long bno) {
-        List<Reply> replyList = replyRepository.findByBoard(Board.builder().bno(bno).build());
+    public List<ReplyDTO> findAll(Long boardId) {
+        List<Reply> replyList = replyRepository.findByBoard(Board.builder().boardId(boardId).build());
 
         //Reply을 형변환해서 Entity로 바꿔서 넣어줌, 실패시 전역예외처리에서 예외처리함.
         return replyList.stream()
-                .map(Reply -> EntityToDto(Reply))
+                .map(ReplyDTO::from)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteAllByBno(Long bno) {//게시글 삭제시 해당 bno 댓글 삭제
+    public void deleteAllByBoardId(Long bno) {//게시글 삭제시 해당 bno 댓글 삭제
             replyRepository.deleteByBoard_Bno(bno);
     }
 }

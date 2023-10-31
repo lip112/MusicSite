@@ -9,14 +9,14 @@ import music.musicsite.entity.user.User;
 @Getter
 @Setter
 public class UserDTO {
-    private int hakbun;
+    private String hakbun;
     private String password;
     private String nickname;
     private Role role;
     private String emailConfirmKey;
 
     @Builder
-    public UserDTO(int hakbun, String password, String nickname, Role role, String emailConfirmKey) {
+    public UserDTO(String hakbun, String password, String nickname, Role role, String emailConfirmKey) {
         this.hakbun = hakbun;
         this.password = password;
         this.nickname = nickname;
@@ -32,5 +32,6 @@ public class UserDTO {
                 .role(user.getRole())
                 .build();
     }
+
 
 }

@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)// auto_increment
-    private Long user_id;
+    private Long userId;
 
     @Column(unique = true, nullable = false) //UK 선언
-    private int hakbun;
+    private String hakbun;
 
     private String password;
 
@@ -36,7 +36,8 @@ public class User {
     private LocalDateTime createdDate;
 
     @Builder
-    public User(int hakbun, String nickname, String password, Role role) {
+    public User(Long userId, String hakbun, String nickname, String password, Role role) {
+        this.userId = userId;
         this.hakbun = hakbun;
         this.nickname = nickname;
         this.password = password;

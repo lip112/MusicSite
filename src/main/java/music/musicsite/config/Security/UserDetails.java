@@ -17,7 +17,7 @@ import java.util.Collection;
 @NoArgsConstructor
 //          시큐리티전용
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
-    private String email;
+    private String hakbun;
 
     private String password;
 
@@ -44,7 +44,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.hakbun;
     }
 
     //계정이 만료되지 않았는가?

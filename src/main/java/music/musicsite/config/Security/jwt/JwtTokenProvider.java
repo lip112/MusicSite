@@ -148,7 +148,7 @@ public class JwtTokenProvider {
 
         TokenDTO userInfomation = refreshTokenService.findUserInfomation(refreshTotken);
 
-        String userEmail = userInfomation.getEmail();
+        String userEmail = userInfomation.getHakbun();
         Object roles = userInfomation.getRole();
 
         Claims claims = Jwts.claims().setSubject(userEmail); // JWT payload 에 저장되는 정보단위
