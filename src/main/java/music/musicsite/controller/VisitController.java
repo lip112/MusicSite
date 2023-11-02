@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/visit")
+@RequestMapping("/api/visit")
 public class VisitController {
     private final VisitorService visitorService;
 

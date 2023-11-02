@@ -4,10 +4,10 @@ import music.musicsite.dto.board.BoardWithReplyDTO;
 import music.musicsite.dto.page.PageRequestDTO;
 import music.musicsite.dto.board.BoardDTO;
 import music.musicsite.dto.response.ResponseDto;
-import music.musicsite.service.reply.ReplyService;
 import music.musicsite.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import music.musicsite.service.reply.ReplyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

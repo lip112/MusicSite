@@ -90,6 +90,7 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 
+
 //feature/improve-all
 // QType 정리
 clean {

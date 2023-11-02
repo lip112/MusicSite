@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
-    Optional<Reply> findByReplyerAndRno(String replyer, Long rno);
+    Optional<Reply> findByReplyerAndReplyId(String replyer, Long replyID);
     List<Reply> findByBoard(Board board);
 
-    void deleteByBoard_Bno(Long bno);
+    void deleteByBoard_BoardId(Long boardId);
 }

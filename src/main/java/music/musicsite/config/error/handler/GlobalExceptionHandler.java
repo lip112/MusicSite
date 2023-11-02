@@ -5,6 +5,8 @@ import music.musicsite.config.error.errorcode.ErrorCode;
 import music.musicsite.config.error.excption.RestApiException;
 import music.musicsite.config.error.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import music.musicsite.customException.DuplicateUserException;
+import music.musicsite.customException.EmailConfirmCodeNotMatchingException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,20 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(DuplicateUserException.class)
+    public ResponseEntity<Object> handleIllegalArgument(final DuplicateUserException e) {
+        log.warn("DuplicateUserException", e);
+        final ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+        return handleExceptionInternal(errorCode, e.getMessage());
+    }
+
+    @ExceptionHandler(EmailConfirmCodeNotMatchingException.class)
+    public ResponseEntity<Object> handleIllegalArgument(final EmailConfirmCodeNotMatchingException e) {
+        log.warn("EmailConfirmCodeNotMatchingException", e);
+        final ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
+        return handleExceptionInternal(errorCode, e.getMessage());
+    }
 
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<Object> handleQuizException(final RestApiException e) {
@@ -44,6 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         final ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
         return handleExceptionInternal(errorCode, e.getMessage());
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
         log.warn("DataIntegrityViolationException", e);
@@ -59,6 +76,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(errorCode, e.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleAllException(final Exception ex) {
+        log.warn("handleAllException", ex);
+        final ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
+        return handleExceptionInternal(errorCode);
+    }
+
     @Override
     public ResponseEntity<Object> handleMethodArgumentNotValid(
             final MethodArgumentNotValidException e,
@@ -68,12 +92,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn("handleMethodArgumentNotValid", e);
         final ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
         return handleExceptionInternal(e, errorCode);
-    }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllException(final Exception ex) {
-        log.warn("handleAllException", ex);
-        final ErrorCode errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR;
-        return handleExceptionInternal(errorCode);
     }
 
     //한개짜리 이건 커스텀메세지가 아니다.
