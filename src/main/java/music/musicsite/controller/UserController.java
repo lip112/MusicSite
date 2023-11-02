@@ -90,7 +90,7 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDto<>("회원가입에 성공하셨습니다."));
     }
 
-    @GetMapping("/signup/{nickname}")
+    @GetMapping("/check-nickname/{nickname}")
     public ResponseEntity<ResponseDto<String>> checkNickname(@PathVariable("nickname") final String nickname) {
         log.info("checkNickname..." + nickname);
 
@@ -113,7 +113,7 @@ public class UserController {
     }
 
     @GetMapping("/confirm-hakbun/{hakbun}")
-    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("hakbun") int hakbun) throws Exception {
+    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("hakbun") String hakbun) throws Exception {
         log.info("emailConfirm..." + hakbun);
 
         String confirm = emailService.sendSimpleMessage(hakbun);

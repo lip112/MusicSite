@@ -23,7 +23,7 @@ import java.util.Optional;
 @Log4j2
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder PasswordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @Override
@@ -33,8 +33,7 @@ public class UserServiceImpl implements UserService {
         if (!userDTO.getEmailConfirmKey().equals(EmailService.EMAIL_CONFIRM_CODE)) {
             throw new EmailConfirmCodeNotMatchingException("이메일 인증번호가 일치하지 않습니다.");
         }
-
-        userDTO.setPassword(PasswordEncoder.encode(userDTO.getPassword()));
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userDTO.setRole(Role.ROLE_USER);
 
         try {
@@ -51,9 +50,12 @@ public class UserServiceImpl implements UserService {
     public UserDTO login(final UserDTO userDTO) {
         log.info("login..." + userDTO);
 
-        User user = userRepository.findByHakbunAndPassword(userDTO.getHakbun(), userDTO.getPassword())
-                .orElseThrow(() -> new NullPointerException("로그인 혹은 비밀번호를 확인하세요."));
+        final User user = userRepository.findByHakbun(userDTO.getHakbun())
+                .orElseThrow(() -> new NullPointerException("해당 학번의 사용자를 찾을 수 없습니다."));
 
+        if (!passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
         return UserDTO.from(user);
     }
 
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByHakbun(userDTO.getHakbun())
                 .orElseThrow(() -> new NullPointerException("존재 하지 않는 사용자 입니다."));
 
-        user.changePassword(PasswordEncoder.encode(userDTO.getPassword()));
+        user.changePassword(passwordEncoder.encode(userDTO.getPassword()));
     }
 
     @Override

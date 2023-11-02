@@ -16,7 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             " where u.nickname = :nickname")
     Optional<User> findByNickname(@Param("nickname") String nickname);
 
-    Optional<User> findByHakbunAndPassword(String hakbun, String password);
     Optional<User> findByHakbun(String hakbun);
 
 //
