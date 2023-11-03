@@ -5,10 +5,12 @@ import music.musicsite.dto.page.PageRequestDTO;
 import music.musicsite.dto.page.PageResultDTO;
 import music.musicsite.dto.board.BoardDTO;
 import music.musicsite.entity.board.Board;
+import music.musicsite.entity.user.User;
 import music.musicsite.repository.board.BoardRepository;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import music.musicsite.repository.user.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -24,13 +27,16 @@ import java.util.function.Function;
 @Log4j2
 @RequiredArgsConstructor
 @Transactional
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
-    private final EntityManager entityManager;
+    private final UserRepository userRepository;
 
-    public Long Register(BoardDTO boardDTO){
+    public Long Register(BoardDTO boardDTO) {
         log.info("boardDTO . . ." + boardDTO);
-        Board save = boardRepository.save(Board.from(boardDTO));
+
+        User user = userRepository.findByNickname(boardDTO.getWriter())
+                .orElseThrow(() -> new NullPointerException("아이디가 존재하지 않습니다."));
+        Board save = boardRepository.save(Board.from(boardDTO, user));
         return save.getBoardId();
     }
 
@@ -40,7 +46,7 @@ public class BoardServiceImpl implements BoardService{
         return boardRepository.getBoardId(boardId);
     }
 
-    public PageResultDTO<Tuple, BoardDTO> getList(PageRequestDTO pageRequestDTO){
+    public PageResultDTO<Tuple, BoardDTO> getList(PageRequestDTO pageRequestDTO) {
         log.info("getList . . .");
 
         // 튜플에서 DTO로 변환하는 람다 함수
@@ -56,13 +62,11 @@ public class BoardServiceImpl implements BoardService{
     @Override // 수정 버튼을 누르고 통과 했을때 내용을 수정하고 완료버튼
     public void modify(BoardDTO boardDTO) {
         log.info("modify . . ." + boardDTO);
-        Board board = entityManager.find(Board.class, boardDTO.getBoardId());
-        String boardWriter = board.getWriter().getNickname();
-        //게시판에 작성한 아이디와 비교 ? 1.수정 완료 버튼 클릭시 검사 2차검사
-        if (boardWriter.equals(boardDTO.getWriter())) {
-            board.changeTitle(boardDTO.getTitle());
-            board.changeContent(boardDTO.getContent());
-        }
+        Board board = boardRepository.findById(boardDTO.getBoardId())
+                .orElseThrow(() -> new NullPointerException("게시물이 존재 하지 않습니다."));
+        //1차적으로 닉네임 수정 체크를 거쳤으니 따로 수정하지 않음.
+        board.changeTitle(boardDTO.getTitle());
+        board.changeContent(boardDTO.getContent());
     }
 
     @Override // 수정 버튼눌렀을때 닉네임 체크하고 작성한 사람인지 파악

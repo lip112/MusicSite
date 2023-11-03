@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED) // 기본 생성자(NoArgsConstructor)의 접근 제어를 PROCTECTED 로 설정하면 아무런 값도 갖지 않는 의미 없는 객체의 생성을 막게 됩니다. 즉 무분별한 객체 생성에 대해 한번 더 체크할 수 있습니다. builder로 생성할때는 가능
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+// 기본 생성자(NoArgsConstructor)의 접근 제어를 PROCTECTED 로 설정하면 아무런 값도 갖지 않는 의미 없는 객체의 생성을 막게 됩니다. 즉 무분별한 객체 생성에 대해 한번 더 체크할 수 있습니다. builder로 생성할때는 가능
 @NoArgsConstructor
 @ToString(exclude = "writer")
 public class Board extends TimeTable {
@@ -41,6 +42,15 @@ public class Board extends TimeTable {
 
     public static Board from(BoardDTO boardDTO) {
         User user = User.builder().nickname(boardDTO.getWriter()).build();
+        Board board = Board.builder()
+                .title(boardDTO.getTitle())
+                .content(boardDTO.getContent())
+                .writer(user)
+                .build();
+        return board;
+    }
+
+    public static Board from(BoardDTO boardDTO, User user) {
         Board board = Board.builder()
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())

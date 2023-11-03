@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class) // 오른쪽에 등록한 필터전에 커스텀필터링이 수행된다
                 .authorizeRequests() //URI에 따른 페이지에 대한 권한을 부여하기 위해 시작하는 메소드 입니다. 아래의 antMatchers 기능을 이용하기 위한 메소드라고 보면 됩니다.
-                .antMatchers("/", "/api/register/**", "/api/notify/**", "/api/board/list/**", "/api/auth/**", "/api/visit/**").permitAll()
+                .antMatchers("/", "/api/user/**", "/api/notify/**", "/api/board/list/**", "/api/auth/**", "/api/visit/**").permitAll()
                 .antMatchers("/api/board/**", "/api/reply/**").hasRole("USER")
                 .antMatchers("/aaa").hasRole("ADMIN");
         //.anyRequest().authenticated() //authenticated() 그 외 요청 인증필요 , .permitAll()은 그외 모든요청 허용

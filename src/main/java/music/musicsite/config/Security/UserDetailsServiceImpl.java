@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override // 로그인시 실행되고 authentication로 값을 돌려줌.
     public UserDetails loadUserByUsername(String hakbun) throws UsernameNotFoundException {
         System.out.println("loadUserByUsernaeme = " + hakbun);
-        User user = userRepository.findByHakbun(hakbun)
+        User user = userRepository.findByNickname(hakbun)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자 입니다."));
         return UserDetails.builder()
                 .hakbun(user.getHakbun())

@@ -19,12 +19,12 @@ public class User {
     @GeneratedValue(strategy= GenerationType.IDENTITY)// auto_increment
     private Long userId;
 
-    @Column(unique = true, nullable = false) //UK 선언
+    @Column(unique = true, nullable = false)
     private String hakbun;
 
     private String password;
 
-    @Column(unique = true, nullable = false) //UK 선언
+    @Column(unique = true, nullable = false)
     private String nickname;
 
     @Enumerated(value = EnumType.STRING) // 또는 @Enumerated(EnumType.STRING) 이고 원래는 INDEX가 저장되지만 0,1,2 name형태 그대로 들어가게 된다.

@@ -32,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             else {
                 // 토큰이 만료된 경우 401 UNAUTHORIZED 에러 반환
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token Expired");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "만료된 RefreshToken 입니다.");
                 return;
             }
         }
