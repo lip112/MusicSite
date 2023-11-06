@@ -17,12 +17,12 @@ public class AdminController {
     @GetMapping("/list")
     public ResponseEntity<ResponseDto<List<UserDTO>>> getList() {
         List<UserDTO> list = managerService.getList();
-        return ResponseEntity.ok(new ResponseDto<>(list, "성공적으로 리스트를 불러왔습니다."));
+        return ResponseEntity.ok(new ResponseDto<>(list, "리스트를 불러왔습니다."));
     }
 
     @PutMapping("/modify")
     public ResponseEntity<ResponseDto<String>> modifyUserInfo(@RequestBody UserDTO userDTO) {
         managerService.modifyUserInfo(userDTO);
-        return ResponseEntity.ok(new ResponseDto<>("성공적으로 변경되었습니다."));
+        return ResponseEntity.ok(new ResponseDto<>("변경되었습니다."));
     }
 }
