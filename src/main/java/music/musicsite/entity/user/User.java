@@ -61,4 +61,13 @@ public class User {
     public void changePassword(String password) {
         this.password = password;
     }
+
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changeRole(Role role) {
+        this.role = role;
+    }
 }
