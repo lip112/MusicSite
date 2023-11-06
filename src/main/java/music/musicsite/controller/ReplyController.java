@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReplyController {
     private final ReplyService replyService;
 
-    @PostMapping("/register")
+    @PostMapping("/write")
     public ResponseEntity<ResponseDto<String>> registerReply(@RequestBody final ReplyDTO replyDTO) {
         log.info("registerReply" + replyDTO);
         replyService.register(replyDTO);

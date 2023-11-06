@@ -1,21 +1,16 @@
 package music.musicsite.controller;
 
-import music.musicsite.config.Security.UserDetails;
 import music.musicsite.config.Security.jwt.JwtTokenProvider;
 import music.musicsite.dto.response.ResponseDto;
 import music.musicsite.dto.token.TokenDTO;
 import music.musicsite.dto.user.UserDTO;
 import music.musicsite.service.mail.EmailService;
 import music.musicsite.service.refreshtoken.RefreshTokenService;
-import music.musicsite.service.visitor.VisitorService;
 import music.musicsite.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -113,12 +107,14 @@ public class UserController {
     }
 
     @GetMapping("/confirm-hakbun/{hakbun}")
-    public ResponseEntity<ResponseDto<String>> emailConfirm(@PathVariable("hakbun") String hakbun) throws Exception {
+    public ResponseEntity<ResponseDto<Map<String, String>>> emailConfirm(@PathVariable("hakbun") String hakbun) throws Exception {
         log.info("emailConfirm..." + hakbun);
 
         String confirm = emailService.sendSimpleMessage(hakbun);
+        Map<String, String> map = new HashMap<>();
+        map.put("code", confirm);
 
-        return ResponseEntity.ok(new ResponseDto<>(confirm, "이메일 인증번호를 성공적으로 발송했습니다."));
+        return ResponseEntity.ok(new ResponseDto<>(map, "이메일 인증번호를 성공적으로 발송했습니다."));
     }
 
 }

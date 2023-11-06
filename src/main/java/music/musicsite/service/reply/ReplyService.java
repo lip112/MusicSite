@@ -3,6 +3,7 @@ package music.musicsite.service.reply;
 import music.musicsite.dto.board.ReplyDTO;
 import music.musicsite.entity.board.Board;
 import music.musicsite.entity.board.Reply;
+import music.musicsite.repository.board.BoardRepository;
 import music.musicsite.repository.reply.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class ReplyService {
     private final ReplyRepository replyRepository;
-    private final EntityManager entityManager;
+    private final BoardRepository boardRepository;
 
     public void register(ReplyDTO replyDTO) {
-        replyRepository.save(Reply.from(replyDTO));
+        Board board = boardRepository.findById(replyDTO.getBoardId())
+                .orElseThrow(() -> new NullPointerException("게시글이 존재하지 않습니다."));
+        replyRepository.save(Reply.from(replyDTO, board));
     }
 
     // 댓글을 작성한 사용자인지 파악하는 메서드
@@ -34,7 +37,8 @@ public class ReplyService {
     // 닉네임이 동일하니 실행
     public void modifyReply(ReplyDTO replyDTO) {
         //JPA에서는 트랜잭션이 끝나는 시점에 변화가 있는 모든 엔티티 객체를 데이터베이스에 자동으로 반영해 준다. 영속성에 있는 값을찾아 변경
-        Reply reply = entityManager.find(Reply.class, replyDTO.getReplyId());
+        Reply reply = replyRepository.findByReplyerAndReplyId(replyDTO.getReplyer() ,replyDTO.getReplyId())
+                .orElseThrow(() -> new NullPointerException("댓글을 찾을 수 없습니다."));
         reply.changeContent(replyDTO.getContent());
     }
 

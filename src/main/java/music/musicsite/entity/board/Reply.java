@@ -30,10 +30,7 @@ public class Reply {
     @Column(updatable = false)
     private LocalDateTime writeReplyDate;
 
-    public static Reply from(ReplyDTO replyDTO) {
-        Board board = Board.builder()
-                .boardId(replyDTO.getBoardId())
-                .build();
+    public static Reply from(ReplyDTO replyDTO, Board board) {
         Reply reply = Reply.builder()
                 .content(replyDTO.getContent())
                 .replyer(replyDTO.getReplyer())
