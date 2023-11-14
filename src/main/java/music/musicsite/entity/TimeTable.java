@@ -19,12 +19,10 @@ import java.time.LocalDateTime;
 public abstract class TimeTable {
 
     @CreatedDate
-    @Column(name = "regdate", updatable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
 
     @LastModifiedDate
-    @Column(name = "moddate")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
 }

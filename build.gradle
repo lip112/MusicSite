@@ -35,6 +35,10 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+    //selenium
+    implementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
+
+
     //컴파일 전용
     compile('org.projectlombok:lombok')
     annotationProcessor('org.projectlombok:lombok') // 추가
