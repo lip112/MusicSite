@@ -27,7 +27,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     @Override
-    public Page<Tuple> getList(Pageable pageable) {
+    public Page<Tuple> getList(Pageable pageable, BoardDTO boardDTO) {
         log.info("getList.................");
 
         QBoard board = QBoard.board;
@@ -43,6 +43,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         JPQLQuery<Board> jpqlQuery = from(board);
         jpqlQuery.leftJoin(user).on(board.writer.eq(user));//user의 PK(uid)와 Board의 FK(Uid)를 비교
         jpqlQuery.leftJoin(reply).on(reply.board.eq(board)); //reply의 FK(bno)와 Board의 PK를 비교
+        jpqlQuery.where(board.category.eq(boardDTO.getCategory()));
 
         JPQLQuery<Tuple> tuple = jpqlQuery.select(board, user.nickname, reply.count());
         tuple.groupBy(board);

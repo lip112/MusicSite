@@ -1,5 +1,11 @@
 package music.musicsite.dto.music;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class SearchResult<T> {
     String totalCount;
     T result;

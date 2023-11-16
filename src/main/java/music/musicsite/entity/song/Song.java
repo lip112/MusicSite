@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@MappedSuperclass
 @Builder
 @EntityListeners(value = { AuditingEntityListener.class})
 public class Song {
@@ -51,7 +50,4 @@ public class Song {
         this.artist = artist;
     }
 
-    public void changeHakbun(String hakbun) {
-        this.hakbun = hakbun;
-    }
 }

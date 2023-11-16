@@ -116,7 +116,6 @@ public class ArtistService {
 
     public SearchResult<List<SongDto>> movePage(int page) throws InterruptedException, IOException {
 
-        driver = WebDriverUtil.getChromeDriver(resourceLoader);
         List<SongDto> songs = new ArrayList<>();
 
         //page number

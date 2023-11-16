@@ -104,7 +104,8 @@ public class AlbumService {
         System.out.println("albums.size() = " + songs.size());
 
         driver.quit();
-
-        return new SearchResult<>(songs, album);
+        SearchResult<List<SongDto>> listSearchResult = new SearchResult<>(songs, album);
+        listSearchResult.setTotalCount(String.valueOf(songs.size()));
+        return listSearchResult;
     }
 }

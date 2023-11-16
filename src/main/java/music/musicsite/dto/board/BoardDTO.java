@@ -11,6 +11,7 @@ import music.musicsite.entity.user.User;
 @AllArgsConstructor
 public class BoardDTO extends BoardWithReplyDTO {
     private Long boardId;
+    private int category;
     private String title;
     private String content;
     private String writer;
@@ -28,6 +29,7 @@ public class BoardDTO extends BoardWithReplyDTO {
                 .writer(writer.getNickname())
                 .regDate(board.getRegDate().toString())
                 .modDate(board.getModDate().toString())
+                .category(board.getCategory())
                 .build();
         return boardDTO;
     }

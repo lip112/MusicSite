@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class SongDto {
     private String title;
 
@@ -25,6 +26,8 @@ public class SongDto {
 
     private String hakbun;
 
+    private Long count;
+
     public static SongDto from(Song song) {
         return SongDto.builder()
                 .title(song.getTitle())
@@ -32,5 +35,13 @@ public class SongDto {
                 .regDate(song.getRegDate())
                 .hakbun(song.getHakbun())
                 .build();
+    }
+
+    public static SongDto from(SongProjectionInterface song) {
+        SongDto songDto = new SongDto();
+        songDto.setTitle(song.getTitle());
+        songDto.setArtist(song.getArtist());
+        songDto.setCount(song.getRequestCount());
+        return songDto;
     }
 }

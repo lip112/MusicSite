@@ -14,7 +14,7 @@ public interface BoardService {
 
     Long Register(BoardDTO boardDTO);
     List<BoardWithReplyDTO> getBoardId(Long bno);
-    PageResultDTO<Tuple, BoardDTO> getList(PageRequestDTO pageRequestDTO);
+    PageResultDTO<Tuple, BoardDTO> getList(PageRequestDTO pageRequestDTO, BoardDTO boardDTO);
 
     void modify(BoardDTO boardDTO);
 

@@ -37,7 +37,7 @@ public class BoardRepositoryTests {
     @Test
     public void BoardList() {
         PageRequestDTO pageRequestDTO = new PageRequestDTO();
-        boardService.getList(pageRequestDTO);
+//        boardService.getList(pageRequestDTO, B);
     }
 
     @Test

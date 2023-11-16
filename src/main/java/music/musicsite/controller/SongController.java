@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -40,7 +42,7 @@ public class SongController {
     @GetMapping("/detail-album/{albumId}")
     public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> detailAlbum(@PathVariable("albumId")String albumId) throws IOException {
         SearchResult<List<SongDto>> listSearchResult = albumService.DetailAlbum(albumId);
-        return ResponseEntity.ok(new ResponseDto<>(listSearchResult, "앨범 검색 결과입니다."));
+        return ResponseEntity.ok(new ResponseDto<>(listSearchResult, "앨범 수록곡 결과입니다."));
     }
 
     @GetMapping("/artist/{artist}")
@@ -74,23 +76,49 @@ public class SongController {
     }
 
     @GetMapping("/artist-song/close")
-    public ResponseEntity<ResponseDto<String>> closeArtistDriver() throws IOException, InterruptedException {
+    public ResponseEntity<ResponseDto<String>> closeArtistDriver() {
         artistService.closeDrvier();
         return ResponseEntity.ok(new ResponseDto<>( "성공적으로 종료되었습니다."));
     }
 
     @PostMapping("/request")
-    public ResponseEntity<ResponseDto<String>> requestSong(@RequestBody SongDto songDto) throws IOException, InterruptedException {
+    public ResponseEntity<ResponseDto<String>> requestSong(@RequestBody SongDto songDto) {
         songService.requestSong(songDto);
         return ResponseEntity.ok(new ResponseDto<>( "성공적으로 신청했습니다."));
     }
 
     @PutMapping("/modify")
-    public ResponseEntity<ResponseDto<String>> modifySong(@RequestBody SongDto songDto) throws IOException, InterruptedException {
+    public ResponseEntity<ResponseDto<String>> modifySong(@RequestBody SongDto songDto)  {
         songService.modifySong(songDto);
         return ResponseEntity.ok(new ResponseDto<>("노래 수정을 완료 했습니다."));
     }
 
+    @GetMapping("/request/{hakbun}")
+    public ResponseEntity<ResponseDto<SongDto>> getRequestSong(@PathVariable("hakbun")String hakbun) {
+        SongDto song = songService.getSong(hakbun);
+        return ResponseEntity.ok(new ResponseDto<>(song, "신청 내용을 성공적으로 불러왔습니다."));
+    }
 
+    @GetMapping("/ranking")
+    public ResponseEntity<ResponseDto<List<SongDto>>> getRanking(String start, String end) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startDateTime = now
+                .withYear(Integer.parseInt(start.substring(0, 4)))
+                .withMonth(Integer.parseInt(start.substring(5, 7)))
+                .withDayOfMonth(Integer.parseInt(start.substring(8)));
+        LocalDateTime endDateTime = now
+                .withYear(Integer.parseInt(end.substring(0, 4)))
+                .withMonth(Integer.parseInt(end.substring(5, 7)))
+                .withDayOfMonth(Integer.parseInt(end.substring(8)));
+
+        List<SongDto> ranKing = songService.getRanKing(startDateTime, endDateTime);
+        return ResponseEntity.ok(new ResponseDto<>(ranKing, start + " 부터" + end + " 까지의 노래 순위 입니다."));
+    }
+
+    @GetMapping("/today-song")
+    public ResponseEntity<ResponseDto<List<SongDto>>> gegTodaySong() {
+        List<SongDto> todaySong = songService.getTodaySong();
+        return ResponseEntity.ok(new ResponseDto<>(todaySong, "금일 신청노래 top10을 성공적으로 불러왔습니다."));
+    }
 
 }

@@ -24,6 +24,8 @@ public class Board extends TimeTable {
 
     private String content;
 
+    private int category;
+
     // 여러개의 게시물은 하나의 작성자를 보유한다., fetch = FetchType.LAZY는 필요할 때만 조회 하게 만들기
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -46,6 +48,7 @@ public class Board extends TimeTable {
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
                 .writer(user)
+                .category(boardDTO.getCategory())
                 .build();
         return board;
     }
@@ -54,6 +57,7 @@ public class Board extends TimeTable {
         Board board = Board.builder()
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
+                .category(boardDTO.getCategory())
                 .writer(user)
                 .build();
         return board;
