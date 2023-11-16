@@ -1,8 +1,8 @@
 package music.musicsite.service.song;
 
 import lombok.RequiredArgsConstructor;
-import music.musicsite.dto.music.SongDto;
-import music.musicsite.dto.music.SongProjectionInterface;
+import music.musicsite.dto.song.SongDto;
+import music.musicsite.dto.song.SongProjectionInterface;
 import music.musicsite.entity.song.Song;
 import music.musicsite.repository.song.SongRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

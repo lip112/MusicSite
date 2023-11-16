@@ -1,11 +1,10 @@
-package music.musicsite.dto.music;
+package music.musicsite.dto.song;
 
 
 import lombok.*;
 import music.musicsite.entity.song.Song;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Setter
 @Getter

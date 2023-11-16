@@ -1,4 +1,4 @@
-package music.musicsite.dto.music;
+package music.musicsite.dto.song;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,9 +2,9 @@ package music.musicsite.service.song;
 
 import lombok.RequiredArgsConstructor;
 import music.musicsite.config.selenium.WebDriverUtil;
-import music.musicsite.dto.music.ArtistDto;
-import music.musicsite.dto.music.SearchResult;
-import music.musicsite.dto.music.SongDto;
+import music.musicsite.dto.song.ArtistDto;
+import music.musicsite.dto.song.SearchResult;
+import music.musicsite.dto.song.SongDto;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

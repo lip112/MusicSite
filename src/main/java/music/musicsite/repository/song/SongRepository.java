@@ -1,6 +1,6 @@
 package music.musicsite.repository.song;
 
-import music.musicsite.dto.music.SongProjectionInterface;
+import music.musicsite.dto.song.SongProjectionInterface;
 import music.musicsite.entity.song.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

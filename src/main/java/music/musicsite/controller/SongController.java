@@ -1,10 +1,10 @@
 package music.musicsite.controller;
 
 import lombok.RequiredArgsConstructor;
-import music.musicsite.dto.music.AlbumDto;
-import music.musicsite.dto.music.ArtistDto;
-import music.musicsite.dto.music.SearchResult;
-import music.musicsite.dto.music.SongDto;
+import music.musicsite.dto.song.AlbumDto;
+import music.musicsite.dto.song.ArtistDto;
+import music.musicsite.dto.song.SearchResult;
+import music.musicsite.dto.song.SongDto;
 import music.musicsite.dto.response.ResponseDto;
 import music.musicsite.service.song.AlbumService;
 import music.musicsite.service.song.ArtistService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
