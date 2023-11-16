@@ -30,11 +30,6 @@ public class User {
     @Enumerated(value = EnumType.STRING) // 또는 @Enumerated(EnumType.STRING) 이고 원래는 INDEX가 저장되지만 0,1,2 name형태 그대로 들어가게 된다.
     private Role role;
 
-    @CreatedDate
-    @Column(updatable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdDate;
-
     @Builder
     public User(Long userId, String hakbun, String nickname, String password, Role role) {
         this.userId = userId;
