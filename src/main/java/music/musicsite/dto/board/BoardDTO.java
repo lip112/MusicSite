@@ -4,6 +4,7 @@ import lombok.*;
 import music.musicsite.entity.board.Board;
 import music.musicsite.entity.user.User;
 
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
 @ToString

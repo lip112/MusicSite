@@ -5,6 +5,7 @@ import music.musicsite.entity.board.Reply;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
 @Builder
