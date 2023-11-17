@@ -22,7 +22,7 @@ public class BoardController {
     private final ReplyService replyService;
 
     @GetMapping("/list")//board/list?page=1 같은 값이들어오면 자동으로 매핑해준다.
-    public ResponseEntity<ResponseDto<String>> ListForm(PageRequestDTO pageRequestDTO, @RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<ResponseDto<String>> ListForm(PageRequestDTO pageRequestDTO, BoardDTO boardDTO) {
         log.info("ListForm" + pageRequestDTO);
         return ResponseEntity.ok(new ResponseDto<>(boardService.getList(pageRequestDTO, boardDTO), "리스트를 성공적으로 불러왔습니다."));
     }
