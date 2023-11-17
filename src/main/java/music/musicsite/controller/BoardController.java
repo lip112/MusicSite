@@ -50,7 +50,7 @@ public class BoardController {
         if (boardService.checkDuplicateNickname(nickname, boardId)) {
             return ResponseEntity.ok(new ResponseDto<>("작성한 사용자가 맞습니다."));
         } else {
-            return ResponseEntity.ok(new ResponseDto<>("작성한 사용자가 아닙니다."));
+            throw new NullPointerException("작성한 사용자가 아닙니다.");
         }
     }
 
