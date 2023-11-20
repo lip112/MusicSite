@@ -8,6 +8,7 @@ import music.musicsite.entity.user.User;
 
 @Getter
 @Setter
+@ToString
 public class UserDTO {
     private String hakbun;
     private String password;

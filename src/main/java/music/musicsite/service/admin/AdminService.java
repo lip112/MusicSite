@@ -1,4 +1,4 @@
-package music.musicsite.service.manager;
+package music.musicsite.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import music.musicsite.dto.user.UserDTO;

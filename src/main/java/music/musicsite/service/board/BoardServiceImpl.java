@@ -73,7 +73,6 @@ public class BoardServiceImpl implements BoardService {
     public boolean checkDuplicateNickname(String nickname, Long boardId) {
         log.info("checkDuplicateNickname . . ." + nickname + "  boardId =" + boardId);
         Optional<Board> byWriterAndBoardId = boardRepository.findByWriterAndBoardId(nickname, boardId);
-
         return byWriterAndBoardId.isPresent();
     }
 

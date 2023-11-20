@@ -3,7 +3,7 @@ package music.musicsite.controller;
 import lombok.RequiredArgsConstructor;
 import music.musicsite.dto.response.ResponseDto;
 import music.musicsite.dto.user.UserDTO;
-import music.musicsite.service.manager.AdminService;
+import music.musicsite.service.admin.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +22,7 @@ public class AdminController {
 
     @PutMapping("/modify")
     public ResponseEntity<ResponseDto<String>> modifyUserInfo(@RequestBody UserDTO userDTO) {
+        System.out.println("Admin modify userDTO = " + userDTO);
         managerService.modifyUserInfo(userDTO);
         return ResponseEntity.ok(new ResponseDto<>("변경되었습니다."));
     }
