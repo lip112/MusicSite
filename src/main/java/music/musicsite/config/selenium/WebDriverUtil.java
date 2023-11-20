@@ -44,6 +44,7 @@ public class WebDriverUtil {
         chromeOptions.addArguments("--disable-gpu"); //gpu를사용하지 않음 리눅스로 헤드리스를 사용할때 필요
         chromeOptions.addArguments("--disable-popup-blocking");       //팝업안띄움
         chromeOptions.addArguments("--blink-settings=imagesEnabled=false"); //이미지 다운 안받음
+        chromeOptions.addArguments("--remote-allow-origins=*");//리눅스 전용 403에러가 발생해서 써봄
 
 
         WebDriver driver = new ChromeDriver(chromeOptions);
