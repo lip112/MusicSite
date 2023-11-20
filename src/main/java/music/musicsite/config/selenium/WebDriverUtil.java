@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -19,10 +20,19 @@ public class WebDriverUtil {
         if (ObjectUtils.isEmpty(System.getProperty("webdriver.chrome.driver"))) {
             // WebDriver 경로
 
-            Resource resource = resourceLoader.getResource("classpath:chromedriver");
-            File file = resource.getFile();
-            String absolutePath = file.getAbsolutePath();
-            System.setProperty("webdriver.chrome.driver", absolutePath);
+            try{
+                Resource resource = resourceLoader.getResource("classpath:chromedriver");
+                File file = resource.getFile();
+                String absolutePath = file.getAbsolutePath();
+                System.setProperty("webdriver.chrome.driver", absolutePath);
+            } catch (FileNotFoundException e){
+                System.out.println("크롬드라이버를 찾지 못 했습니다.");
+                String chromedriverPath = "/home/ec2-user/MusicSite/build/resources/main/chromedriver";
+                File chromedriverFile = new File(chromedriverPath);
+
+                System.setProperty("webdriver.chrome.driver", chromedriverFile.getAbsolutePath());
+
+            }
         }
 
         // webDriver 옵션 설정
