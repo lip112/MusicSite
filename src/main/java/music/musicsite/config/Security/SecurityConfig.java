@@ -60,7 +60,7 @@ public class SecurityConfig {
     //cors 설정
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://ec2-43-201-8-233.ap-northeast-2.compute.amazonaws.com", "http://ec2-43-201-8-233")); // 프론트엔드 도메인 주소
+        configuration.setAllowedOrigins(Arrays.asList("http://ec2-43-201-8-233.ap-northeast-2.compute.amazonaws.com", "http://localhost:3000")); // 프론트엔드 도메인 주소
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowCredentials(true); // allowCredentials를 true로 설정
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
