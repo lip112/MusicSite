@@ -26,7 +26,7 @@ public class Song {
 
     private String artist;
 
-    private String hakbun;
+    private String nickname;
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -36,7 +36,7 @@ public class Song {
         return Song.builder()
                 .title(songDto.getTitle())
                 .artist(songDto.getArtist())
-                .hakbun(songDto.getHakbun())
+                .nickname(songDto.getNickname())
                 .build();
     }
 

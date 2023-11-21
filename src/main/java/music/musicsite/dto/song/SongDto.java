@@ -23,7 +23,7 @@ public class SongDto {
 
     private LocalDateTime regDate;
 
-    private String hakbun;
+    private String nickname;
 
     private Long count;
 
@@ -32,7 +32,7 @@ public class SongDto {
                 .title(song.getTitle())
                 .artist(song.getArtist())
                 .regDate(song.getRegDate())
-                .hakbun(song.getHakbun())
+                .nickname(song.getNickname())
                 .build();
     }
 

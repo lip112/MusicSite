@@ -92,9 +92,9 @@ public class SongController {
         return ResponseEntity.ok(new ResponseDto<>("노래 수정을 완료 했습니다."));
     }
 
-    @GetMapping("/request/{hakbun}")
-    public ResponseEntity<ResponseDto<SongDto>> getRequestSong(@PathVariable("hakbun")String hakbun) {
-        SongDto song = songService.getSong(hakbun);
+    @GetMapping("/request/{nickname}")
+    public ResponseEntity<ResponseDto<SongDto>> getRequestSong(@PathVariable("nickname")String nickname) {
+        SongDto song = songService.getSong(nickname);
         return ResponseEntity.ok(new ResponseDto<>(song, "신청 내용을 성공적으로 불러왔습니다."));
     }
 

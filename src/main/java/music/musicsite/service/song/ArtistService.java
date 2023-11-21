@@ -175,6 +175,6 @@ public class ArtistService {
     }
 
     public void closeDrvier() {
-        driver.close();
+        WebDriverUtil.close(driver);
     }
 }

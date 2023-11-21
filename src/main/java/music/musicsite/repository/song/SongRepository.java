@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface SongRepository extends JpaRepository<Song, Long> {
 
-    Optional<Song> findByHakbun(String hakbun);
+    Optional<Song> findByNickname(String nickname);
 
     //별칭을 꼭 적어줘야 매칭이 된다.
     @Query(value = "select s.artist as artist, s.title as title, count(*) as requestCount" +

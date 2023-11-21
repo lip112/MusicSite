@@ -22,15 +22,15 @@ public class SongService {
     }
 
     public void modifySong(SongDto songDto) {
-        Song song = songRepository.findByHakbun(songDto.getHakbun())
+        Song song = songRepository.findByNickname(songDto.getNickname())
                 .orElseThrow(() -> new UsernameNotFoundException("신청한 사용자가 아닙니다."));
 
         song.changeArtist(songDto.getArtist());
         song.changeTitle(songDto.getTitle());
     }
 
-    public SongDto getSong(String hakbun) {
-        Song song = songRepository.findByHakbun(hakbun)
+    public SongDto getSong(String nickname) {
+        Song song = songRepository.findByNickname(nickname)
                 .orElseThrow(() -> new NullPointerException("신청한 노래가 없습니다."));
 
         return SongDto.from(song);
