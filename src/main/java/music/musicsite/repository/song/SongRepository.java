@@ -15,10 +15,15 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Optional<Song> findByNickname(String nickname);
 
+    @Query(value = " select s " +
+            " from Song s " +
+            " where s.nickname = :nickname AND s.regDate >= :time")
+    Optional<Song> findTodaySong(@Param("nickname") String nickname,@Param("time") LocalDateTime localDateTime);
+
     //별칭을 꼭 적어줘야 매칭이 된다.
     @Query(value = "select s.artist as artist, s.title as title, count(*) as requestCount" +
             " from Song s" +
-            " where substring(s.regDate, 1, 10) between substring(:startDate, 1, 10) AND substring(:endDate, 1, 10)  " +
+            " where substring(s.regDate, 1, 10) between substring(:startDate, 0, 11) AND substring(:endDate, 0, 11)  " +
             " group by s.artist, s.title" +
             " ORDER BY COUNT(*) DESC")
     List<SongProjectionInterface> findRanking(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);

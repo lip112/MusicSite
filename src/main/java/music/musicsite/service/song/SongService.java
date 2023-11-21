@@ -30,7 +30,9 @@ public class SongService {
     }
 
     public SongDto getSong(String nickname) {
-        Song song = songRepository.findByNickname(nickname)
+        //어제 11시1분 이후로 신청한 내역을 가져옴
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(1);
+        Song song = songRepository.findTodaySong(nickname, localDateTime)
                 .orElseThrow(() -> new NullPointerException("신청한 노래가 없습니다."));
 
         return SongDto.from(song);
