@@ -22,8 +22,10 @@ public class SongService {
     }
 
     public void modifySong(SongDto songDto) {
-        Song song = songRepository.findByNickname(songDto.getNickname())
-                .orElseThrow(() -> new UsernameNotFoundException("신청한 사용자가 아닙니다."));
+        //어제 11시1분 이후로 신청한 내역을 가져옴
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(1);
+        Song song = songRepository.findTodaySong(songDto.getNickname(), localDateTime)
+                .orElseThrow(() -> new NullPointerException("신청한 노래가 없습니다."));
 
         song.changeArtist(songDto.getArtist());
         song.changeTitle(songDto.getTitle());

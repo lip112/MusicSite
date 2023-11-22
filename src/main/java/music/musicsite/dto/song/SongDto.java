@@ -27,12 +27,13 @@ public class SongDto {
 
     private Long count;
 
+    private Long songId;
+
     public static SongDto from(Song song) {
         return SongDto.builder()
                 .title(song.getTitle())
                 .artist(song.getArtist())
                 .regDate(song.getRegDate())
-                .nickname(song.getNickname())
                 .build();
     }
 
