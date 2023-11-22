@@ -32,7 +32,7 @@ public class JwtTokenProvider {
 
     private String accessSecretKey = "RWEPKFSDF3242332!@#vxvcx#$$@gFDGDFGDSFSWASDWDdsaweaea";
     // 토큰 유효시간 1 * 60 * 1000L 1분
-    private long accessTokenValidTime = 60 * 60 * 1000L;
+    private long accessTokenValidTime = 4 * 60 * 60 * 1000L;
 
     private String refreshSecretKey = "RWEPKFSDF3242332!@#vxvcx#$$@gFDGDFGDSFSWMeassdsaweaea";
     // 토큰 유효시간 60분

@@ -115,7 +115,6 @@ public class ArtistService {
 
 
     public SearchResult<List<SongDto>> movePage(int page) throws InterruptedException, IOException {
-
         List<SongDto> songs = new ArrayList<>();
 
         //page number
@@ -127,12 +126,17 @@ public class ArtistService {
         new WebDriverWait(driver, Duration.ofSeconds(100))
                 .until(ExpectedConditions.jsReturnsValue("return document.readyState === 'complete';"));
 
-        if (page == PREV_BUTTON) {
-            pageElement.get(0).click();
-        } else if (page == NEXT_BUTTON) {
-            pageElement.get(pageElement.size() - 1).click();
-        } else {
-            pageElement.get(page).click();
+        try {
+            if (page == PREV_BUTTON) {
+                pageElement.get(0).click();
+            } else if (page == NEXT_BUTTON) {
+                pageElement.get(pageElement.size() - 1).click();
+            } else {
+                pageElement.get(page).click();
+            }
+        } catch (Exception e) {
+            WebDriverUtil.quit(driver);
+            throw new NullPointerException("현재 페이지 에서 존재하지 않는 페이지 입니다.");
         }
 
         Thread.sleep(1000);
@@ -175,6 +179,6 @@ public class ArtistService {
     }
 
     public void closeDrvier() {
-        WebDriverUtil.close(driver);
+        WebDriverUtil.quit(driver);
     }
 }

@@ -47,7 +47,7 @@ public class AlbumService {
             String title = infoElement.findElement(By.cssSelector("dt.ellipsis > a")).getText();
             albumDto.setAlbumTitle(title);
 
-            String artist = infoElement.findElement(By.className("ellipsis")).getText();
+            String artist = infoElement.findElement(By.className("album-artist")).getText();
             albumDto.setArtist(artist);
 
             String since = infoElement.findElement(By.cssSelector("dd.desc")).getText();

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.Optional;
 
@@ -41,10 +42,10 @@ public class UserServiceImpl implements UserService {
             UserDTO.from(save);
 
         } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new DuplicateUserException("이미 존재하는 이메일 입니다.");
         }
     }
-    //로그인 중복 시에 예외처리는 아직 동작 확인 안함.
 
     @Override
     public UserDTO login(final UserDTO userDTO) {
