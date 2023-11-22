@@ -5,8 +5,10 @@ import music.musicsite.dto.song.SongDto;
 import music.musicsite.dto.song.SongProjectionInterface;
 import music.musicsite.entity.song.Song;
 import music.musicsite.repository.song.SongRepository;
+import org.springframework.security.core.Transient;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SongService {
     private final SongRepository songRepository;
 
@@ -29,6 +32,7 @@ public class SongService {
 
         song.changeArtist(songDto.getArtist());
         song.changeTitle(songDto.getTitle());
+
     }
 
     public SongDto getSong(String nickname) {
