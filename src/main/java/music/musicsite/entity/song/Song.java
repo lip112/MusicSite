@@ -48,4 +48,7 @@ public class Song {
         this.artist = artist;
     }
 
+    public void changeRegDate(LocalDateTime regDate) {
+        this.regDate = regDate;
+    }
 }

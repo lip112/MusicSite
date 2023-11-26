@@ -12,6 +12,14 @@ public class SearchResult<T> {
 
     AlbumDto albumDto;
 
+    int hashcode;
+
+    public SearchResult(String totalCount, T result, int hashcode) {
+        this.totalCount = totalCount;
+        this.result = result;
+        this.hashcode = hashcode;
+    }
+
     public SearchResult(String totalCount, T result) {
         this.totalCount = totalCount;
         this.result = result;

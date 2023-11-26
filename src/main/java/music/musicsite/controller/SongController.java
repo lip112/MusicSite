@@ -57,26 +57,26 @@ public class SongController {
     }
 
     @GetMapping("/artist-song/{artist}/{page}")
-    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongPage(@PathVariable("page")int page) throws IOException, InterruptedException {
-        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(page);
+    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongPage(@PathVariable("page")int page,int hashcode) throws InterruptedException {
+        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(page, hashcode);
         return ResponseEntity.ok(new ResponseDto<>(listSearchResult, "해당 가수의 " + page + "page 발매곡입니다."));
     }
 
     @GetMapping("/artist-song/{artist}/prev")
-    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongPrev() throws IOException, InterruptedException {
-        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(ArtistService.PREV_BUTTON);
+    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongPrev(int hashcode) throws InterruptedException {
+        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(ArtistService.PREV_BUTTON, hashcode);
         return ResponseEntity.ok(new ResponseDto<>(listSearchResult, "해당 가수의 이전 페이지 발매곡입니다."));
     }
 
     @GetMapping("/artist-song/{artist}/next")
-    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongNext() throws IOException, InterruptedException {
-        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(ArtistService.NEXT_BUTTON);
+    public ResponseEntity<ResponseDto<SearchResult<List<SongDto>>>> moveArtistDetailSongNext(int hashcode) throws InterruptedException {
+        SearchResult<List<SongDto>> listSearchResult = artistService.movePage(ArtistService.NEXT_BUTTON, hashcode);
         return ResponseEntity.ok(new ResponseDto<>(listSearchResult, "해당 가수의 다음 페이지 발매곡입니다."));
     }
 
     @GetMapping("/artist-song/close")
-    public ResponseEntity<ResponseDto<String>> closeArtistDriver() {
-        artistService.closeDrvier();
+    public ResponseEntity<ResponseDto<String>> closeArtistDriver(int hashcode) {
+        artistService.closeDrvier(hashcode);
         return ResponseEntity.ok(new ResponseDto<>( "성공적으로 종료되었습니다."));
     }
 

@@ -32,6 +32,7 @@ public class SongService {
 
         song.changeArtist(songDto.getArtist());
         song.changeTitle(songDto.getTitle());
+        song.changeRegDate(LocalDateTime.now());
     }
 
     public SongDto getSong(String nickname) {

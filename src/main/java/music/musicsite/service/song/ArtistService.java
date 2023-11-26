@@ -16,13 +16,16 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
     private final ResourceLoader resourceLoader;
     private WebDriver driver;
+    private final Map<Integer, WebDriver> map = new HashMap<>();
 
     public static final int PREV_BUTTON = 888;
     public static final int NEXT_BUTTON = 999;
@@ -109,14 +112,17 @@ public class ArtistService {
             System.out.println("song = " + song);
         }
         System.out.println("songs.size() = " + songs.size());
+        System.out.println(driver.hashCode());
+        map.put(driver.hashCode(), driver);
 
-        return new SearchResult<>(totalSongCount, songs);
+        return new SearchResult<>(totalSongCount, songs, driver.hashCode());
     }
 
 
-    public SearchResult<List<SongDto>> movePage(int page) throws InterruptedException, IOException {
+    public SearchResult<List<SongDto>> movePage(int page, int hashcode) throws InterruptedException {
         List<SongDto> songs = new ArrayList<>();
 
+        WebDriver driver = map.get(hashcode);
         //page number
         WebElement element1 = driver.findElement(By.className("page-nav"));
         List<WebElement> pageElement = element1.findElements(By.cssSelector("div.page-nav > a"));
@@ -178,7 +184,9 @@ public class ArtistService {
         return new SearchResult<>(totalSongCount, songs);
     }
 
-    public void closeDrvier() {
+    public void closeDrvier(int hashcode) {
+        WebDriver driver = map.get(hashcode);
         WebDriverUtil.quit(driver);
+        map.remove(hashcode);
     }
 }
