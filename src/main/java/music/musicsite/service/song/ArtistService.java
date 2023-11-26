@@ -122,6 +122,13 @@ public class ArtistService {
     public SearchResult<List<SongDto>> movePage(int page, int hashcode) throws InterruptedException {
         List<SongDto> songs = new ArrayList<>();
 
+
+        for (Map.Entry<Integer, WebDriver> entry : map.entrySet())
+        {
+            System.out.println("key : " + entry.getKey() + " / " + "value : " + entry.getValue());
+        }
+
+
         System.out.println("page = " + page);
         System.out.println(hashcode);
 
