@@ -76,7 +76,7 @@ public class SongController {
 
     @GetMapping("/artist-song/close")
     public ResponseEntity<ResponseDto<String>> closeArtistDriver(int hashcode) {
-        artistService.closeDrvier(hashcode);
+        artistService.closeDriver(hashcode);
         return ResponseEntity.ok(new ResponseDto<>( "성공적으로 종료되었습니다."));
     }
 

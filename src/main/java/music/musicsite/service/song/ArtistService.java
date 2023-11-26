@@ -122,7 +122,13 @@ public class ArtistService {
     public SearchResult<List<SongDto>> movePage(int page, int hashcode) throws InterruptedException {
         List<SongDto> songs = new ArrayList<>();
 
+        System.out.println("page = " + page);
+        System.out.println(hashcode);
+
         WebDriver driver = map.get(hashcode);
+
+        System.out.println("hashcode = " + hashcode);
+        System.out.println("driver = " + driver);
         //page number
         WebElement element1 = driver.findElement(By.className("page-nav"));
         List<WebElement> pageElement = element1.findElements(By.cssSelector("div.page-nav > a"));
@@ -184,7 +190,7 @@ public class ArtistService {
         return new SearchResult<>(totalSongCount, songs);
     }
 
-    public void closeDrvier(int hashcode) {
+    public void closeDriver(int hashcode) {
         WebDriver driver = map.get(hashcode);
         WebDriverUtil.quit(driver);
         map.remove(hashcode);
