@@ -23,7 +23,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     //별칭을 꼭 적어줘야 매칭이 된다.
     @Query(value = "select s.artist as artist, s.title as title, count(*) as requestCount" +
             " from Song s" +
-            " where substring(s.regDate, 0, 11) between substring(:startDate, 0, 11) AND substring(:endDate, 0, 11)  " +
+            " where s.regDate between :startDate AND :endDate " +
             " group by s.artist, s.title" +
             " ORDER BY COUNT(*) DESC")
     List<SongProjectionInterface> findRanking(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);

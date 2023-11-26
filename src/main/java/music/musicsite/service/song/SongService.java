@@ -26,18 +26,17 @@ public class SongService {
 
     public void modifySong(SongDto songDto) {
         //어제 11시1분 이후로 신청한 내역을 가져옴
-        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(1);
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(0);
         Song song = songRepository.findTodaySong(songDto.getNickname(), localDateTime)
                 .orElseThrow(() -> new NullPointerException("신청한 노래가 없습니다."));
 
         song.changeArtist(songDto.getArtist());
         song.changeTitle(songDto.getTitle());
-
     }
 
     public SongDto getSong(String nickname) {
         //어제 11시1분 이후로 신청한 내역을 가져옴
-        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(1);
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(1).withHour(11).withMinute(0);
         Song song = songRepository.findTodaySong(nickname, localDateTime)
                 .orElseThrow(() -> new NullPointerException("신청한 노래가 없습니다."));
 
@@ -45,6 +44,10 @@ public class SongService {
     }
 
     public List<SongDto> getRanKing(LocalDateTime start, LocalDateTime end) {
+
+        start = start.withHour(0)
+                .withMinute(0)
+                .withSecond(1);
         List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
         return ranking
                 .stream()
