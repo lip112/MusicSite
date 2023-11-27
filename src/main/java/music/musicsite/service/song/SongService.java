@@ -61,12 +61,12 @@ public class SongService {
                     .minusDays(2)
                     .withHour(11)
                     .withMinute(0)
-                    .withSecond(1);
+                    .withSecond(0);
             LocalDateTime start = LocalDateTime.now()
                     .minusDays(1)
                     .withHour(11)
                     .withMinute(0)
-                    .withSecond(1);
+                    .withSecond(0);
             List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
             return ranking
                     .stream()
@@ -83,7 +83,7 @@ public class SongService {
                     .minusDays(1)
                     .withHour(11)
                     .withMinute(0)
-                    .withSecond(1);
+                    .withSecond(0);
             List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
             return ranking
                     .stream()
