@@ -122,7 +122,8 @@ public class ArtistService {
     public SearchResult<List<SongDto>> movePage(int page, int hashcode) throws InterruptedException {
         List<SongDto> songs = new ArrayList<>();
 
-
+        System.out.println("map.size() = " + map.size());
+        
         for (Map.Entry<Integer, WebDriver> entry : map.entrySet())
         {
             System.out.println("key : " + entry.getKey() + " / " + "value : " + entry.getValue());
@@ -198,6 +199,7 @@ public class ArtistService {
     }
 
     public void closeDriver(int hashcode) {
+        System.out.println("종료 : " + hashcode);
         WebDriver driver = map.get(hashcode);
         WebDriverUtil.quit(driver);
         map.remove(hashcode);
