@@ -57,16 +57,16 @@ public class SongService {
     public List<SongDto> getTodaySong() {
         //11시 이전 시간 이면 하루전 11시~ 현재 시간
         if (LocalDateTime.now().getHour() <= 11) {
-            LocalDateTime end = LocalDateTime.now()
+            LocalDateTime start = LocalDateTime.now()
                     .minusDays(2)
                     .withHour(11)
                     .withMinute(0)
                     .withSecond(0);
-            LocalDateTime start = LocalDateTime.now()
+            LocalDateTime end = LocalDateTime.now()
                     .minusDays(1)
-                    .withHour(11)
-                    .withMinute(0)
-                    .withSecond(0);
+                    .withHour(10)
+                    .withMinute(59)
+                    .withSecond(59);
             List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
             return ranking
                     .stream()
@@ -75,15 +75,15 @@ public class SongService {
                     .collect(Collectors.toList());
 
         } else {
-            LocalDateTime end = LocalDateTime.now()
-                    .withHour(10)
-                    .withMinute(59)
-                    .withSecond(59);
             LocalDateTime start = LocalDateTime.now()
                     .minusDays(1)
                     .withHour(11)
                     .withMinute(0)
                     .withSecond(0);
+            LocalDateTime end = LocalDateTime.now()
+                    .withHour(10)
+                    .withMinute(59)
+                    .withSecond(59);
             List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
             return ranking
                     .stream()
