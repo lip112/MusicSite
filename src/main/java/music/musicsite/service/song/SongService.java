@@ -5,8 +5,6 @@ import music.musicsite.dto.song.SongDto;
 import music.musicsite.dto.song.SongProjectionInterface;
 import music.musicsite.entity.song.Song;
 import music.musicsite.repository.song.SongRepository;
-import org.springframework.security.core.Transient;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,16 +55,41 @@ public class SongService {
     }
 
     public List<SongDto> getTodaySong() {
-        LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = end.minusDays(1)
-                .withHour(11)
-                .withMinute(0)
-                .withSecond(1);
-        List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
-        return ranking
-                .stream()
-                .limit(10)
-                .map(SongDto::from)
-                .collect(Collectors.toList());
+        //11시 이전 시간 이면 하루전 11시~ 현재 시간
+        if (LocalDateTime.now().getHour() <= 11) {
+            LocalDateTime end = LocalDateTime.now()
+                    .minusDays(2)
+                    .withHour(11)
+                    .withMinute(0)
+                    .withSecond(1);
+            LocalDateTime start = LocalDateTime.now()
+                    .minusDays(1)
+                    .withHour(11)
+                    .withMinute(0)
+                    .withSecond(1);
+            List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
+            return ranking
+                    .stream()
+                    .limit(10)
+                    .map(SongDto::from)
+                    .collect(Collectors.toList());
+
+        } else {
+            LocalDateTime end = LocalDateTime.now()
+                    .withHour(10)
+                    .withMinute(59)
+                    .withSecond(59);
+            LocalDateTime start = LocalDateTime.now()
+                    .minusDays(1)
+                    .withHour(11)
+                    .withMinute(0)
+                    .withSecond(1);
+            List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
+            return ranking
+                    .stream()
+                    .limit(10)
+                    .map(SongDto::from)
+                    .collect(Collectors.toList());
+        }
     }
 }
