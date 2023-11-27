@@ -48,7 +48,7 @@ public class SongService {
 
         start = start.withHour(0)
                 .withMinute(0)
-                .withSecond(1);
+                .withSecond(0);
         List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
         return ranking
                 .stream()
@@ -58,7 +58,10 @@ public class SongService {
 
     public List<SongDto> getTodaySong() {
         LocalDateTime end = LocalDateTime.now();
-        LocalDateTime start = end.minusDays(1);
+        LocalDateTime start = end.minusDays(1)
+                .withHour(11)
+                .withMinute(0)
+                .withSecond(1);
         List<SongProjectionInterface> ranking = songRepository.findRanking(start, end);
         return ranking
                 .stream()
